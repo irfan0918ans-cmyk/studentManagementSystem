@@ -27,6 +27,7 @@ public class StudentService {
         dto.setCreatedAt(student.getCreatedAt());
         return dto;
     }
+
     public StudentResponseDTO saveStudentService(StudentRequestDTO studentRequestDTO) {
         Student saveToDB = new Student();
         saveToDB.setName(studentRequestDTO.getName());
@@ -71,5 +72,11 @@ public class StudentService {
         Student updatedStudent = studentRepository.save(student);
 
         return toResponseDto(updatedStudent);
+    }
+
+    public void deletedStudentService(String nameToDelete){
+        Student student = studentRepository.findByNameContainingIgnoreCase(nameToDelete).
+                orElseThrow(()-> new RuntimeException("Student Not Found"));
+        studentRepository.deleteById(student.getId());
     }
 }
