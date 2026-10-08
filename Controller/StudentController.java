@@ -35,8 +35,9 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteStudentController(@RequestParam String nameToDelete){
+    public String deleteStudentController(@RequestParam String nameToDelete){
         studentService.deletedStudentService(nameToDelete);
+        return "Deleted Successfully";
     }
 
 }

@@ -3,12 +3,13 @@ package com.project.studentManagementSystem.Service;
 import com.project.studentManagementSystem.DTO.StudentDTO.StudentRequestDTO;
 import com.project.studentManagementSystem.DTO.StudentDTO.StudentResponseDTO;
 import com.project.studentManagementSystem.Entity.Student;
+import com.project.studentManagementSystem.Exception.StudentNotFoundException;
 import com.project.studentManagementSystem.Repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class StudentService {
@@ -56,13 +57,13 @@ public class StudentService {
 
     public StudentResponseDTO getStudentByNameService(String nameToFind){
         Student student = studentRepository.findByNameContainingIgnoreCase(nameToFind)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException("Student Not Found"));
         return toResponseDto(student);
     }
 
     public StudentResponseDTO updateStudentService(String nameToUpdate, StudentRequestDTO studentRequestDTO){
         Student student = studentRepository.findByNameContainingIgnoreCase(nameToUpdate)
-                .orElseThrow(() -> new RuntimeException("Student not Found"));
+                .orElseThrow(() -> new StudentNotFoundException("Student not Found"));
 
         student.setName(studentRequestDTO.getName());
         student.setAge(studentRequestDTO.getAge());
@@ -76,7 +77,7 @@ public class StudentService {
 
     public void deletedStudentService(String nameToDelete){
         Student student = studentRepository.findByNameContainingIgnoreCase(nameToDelete).
-                orElseThrow(()-> new RuntimeException("Student Not Found"));
+                orElseThrow(()-> new StudentNotFoundException("Student Not Found"));
         studentRepository.deleteById(student.getId());
     }
 }
