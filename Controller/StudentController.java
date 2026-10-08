@@ -4,6 +4,8 @@ package com.project.studentManagementSystem.Controller;
 import com.project.studentManagementSystem.DTO.StudentDTO.StudentRequestDTO;
 import com.project.studentManagementSystem.DTO.StudentDTO.StudentResponseDTO;
 import com.project.studentManagementSystem.Service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,25 +21,28 @@ public class StudentController {
     }
 
     @PostMapping("/save")
-    public StudentResponseDTO saveStudentController(@RequestBody StudentRequestDTO studentRequestDTO){
-        return studentService.saveStudentService(studentRequestDTO);
+    public ResponseEntity<StudentResponseDTO> saveStudentController(@RequestBody StudentRequestDTO studentRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(studentService.saveStudentService(studentRequestDTO));
     }
 
     @GetMapping("/getAll")
-    public List<StudentResponseDTO> getAllStudentController(){
-        return studentService.getAllStudentService();
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudentController(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(studentService.getAllStudentService());
     }
 
     @PutMapping("/update")
-    public StudentResponseDTO updateStudentController(@RequestParam String nameToUpdate,
-                                                      @RequestBody StudentRequestDTO studentRequestDTO){
-        return studentService.updateStudentService(nameToUpdate,studentRequestDTO);
+    public ResponseEntity<StudentResponseDTO> updateStudentController(@RequestParam String nameToUpdate,
+                                                                      @RequestBody StudentRequestDTO studentRequestDTO){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(studentService.updateStudentService(nameToUpdate,studentRequestDTO));
     }
-
     @DeleteMapping("/delete")
-    public String deleteStudentController(@RequestParam String nameToDelete){
+    public ResponseEntity<String> deleteStudentController(@RequestParam String nameToDelete){
         studentService.deletedStudentService(nameToDelete);
-        return "Deleted Successfully";
+       return ResponseEntity.status(HttpStatus.OK)
+                .body("Student Deleted Successfully");
     }
 
 }
