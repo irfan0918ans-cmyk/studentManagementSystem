@@ -29,10 +29,9 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public StudentResponseDTO updateStudentController(@RequestParam String name,
+    public StudentResponseDTO updateStudentController(@RequestParam String nameToUpdate,
                                                       @RequestBody StudentRequestDTO studentRequestDTO){
-        return studentService.updateStudentService(name,studentRequestDTO);
+        return studentService.updateStudentService(nameToUpdate,studentRequestDTO);
     }
-
 
 }
