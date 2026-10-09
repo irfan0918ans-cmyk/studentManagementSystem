@@ -49,16 +49,10 @@ public class StudentService {
     }
 
     public List<StudentResponseDTO> getAllStudentService(){
-       return studentRepository.findAll()
-               .stream()
-               .map(student -> toResponseDto(student))
-               .toList();
-    }
-
-    public StudentResponseDTO getStudentByNameService(String nameToFind){
-        Student student = studentRepository.findByNameContainingIgnoreCase(nameToFind)
-                .orElseThrow(() -> new StudentNotFoundException("Student Not Found"));
-        return toResponseDto(student);
+        return studentRepository.findByIsDeletedFalse()
+                .stream()
+                .map(student -> toResponseDto(student))
+                .toList();
     }
 
     public StudentResponseDTO updateStudentService(String nameToUpdate, StudentRequestDTO studentRequestDTO){
@@ -76,8 +70,27 @@ public class StudentService {
     }
 
     public void deletedStudentService(String nameToDelete){
-        Student student = studentRepository.findByNameContainingIgnoreCase(nameToDelete).
-                orElseThrow(()-> new StudentNotFoundException("Student Not Found"));
-        studentRepository.deleteById(student.getId());
+        Student student = studentRepository.findByNameContainingIgnoreCase(nameToDelete)
+                .orElseThrow(() -> new StudentNotFoundException("Student Not Found"));
+
+        if (Boolean.TRUE.equals(student.getIsDeleted())){
+            throw new StudentNotFoundException("Student Not Found");
+        }
+
+        studentRepository.delete(student);
+    }
+
+    public void softDeleteStudentService(String name){
+        Student student = studentRepository.findByNameContainingIgnoreCase(name)
+                .orElseThrow(() -> new StudentNotFoundException("Student not Exist"));
+
+        if (student.getIsDeleted() == false){
+            student.setIsDeleted(true);
+            studentRepository.save(student);
+        }
+        else {
+            throw new StudentNotFoundException("Student not found");
+        }
+
     }
 }

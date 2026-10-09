@@ -45,4 +45,11 @@ public class StudentController {
                 .body("Student Deleted Successfully");
     }
 
+    @PatchMapping("/delete")
+    public ResponseEntity<String> softDeleteStudentController(@RequestParam String name){
+        studentService.softDeleteStudentService(name);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Student Deleted Successfully");
+    }
+
 }

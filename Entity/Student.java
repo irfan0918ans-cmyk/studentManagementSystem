@@ -26,6 +26,6 @@ public class Student {
     private String course;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 }
