@@ -27,5 +27,6 @@ public class Student {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isDeleted = false;
+    private LocalDateTime softDeletedAt;
 
 }

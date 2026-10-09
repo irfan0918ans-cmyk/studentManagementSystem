@@ -76,7 +76,6 @@ public class StudentService {
         if (Boolean.TRUE.equals(student.getIsDeleted())){
             throw new StudentNotFoundException("Student Not Found");
         }
-
         studentRepository.delete(student);
     }
 
@@ -84,13 +83,14 @@ public class StudentService {
         Student student = studentRepository.findByNameContainingIgnoreCase(name)
                 .orElseThrow(() -> new StudentNotFoundException("Student not Exist"));
 
-        if (student.getIsDeleted() == false){
-            student.setIsDeleted(true);
-            studentRepository.save(student);
+        if (Boolean.TRUE.equals(student.getIsDeleted())){
+            throw new StudentNotFoundException("Student Not Found");
         }
-        else {
-            throw new StudentNotFoundException("Student not found");
-        }
+
+        student.setIsDeleted(true);
+        student.setSoftDeletedAt(LocalDateTime.now());
+        studentRepository.save(student);
+
 
     }
 }
